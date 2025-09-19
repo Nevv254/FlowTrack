@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - FlowTrack{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Quick Stats -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Stats</h3>
+        <div class="space-y-2">
+            <p class="text-sm text-gray-600">Total Expenses: <span class="font-semibold text-gray-800">${{ total_expenses|round(2) }}</span></p>
+            <p class="text-sm text-gray-600">This Month: <span class="font-semibold text-gray-800">${{ monthly_total|round(2) }}</span></p>
+            <p class="text-sm text-gray-600">Categories: <span class="font-semibold text-gray-800">{{ category_count }}</span></p>
+        </div>
+    </div>
+
+    <!-- Recent Expenses -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Expenses</h3>
+        <div class="space-y-2">
+            {% for expense in recent_expenses %}
+                <div class="flex justify-between items-center py-1">
+                    <span class="text-sm text-gray-600">{{ expense[2] }}</span>
+                    <span class="text-sm font-semibold">${{ expense[1] }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Budget Status -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Budget Status</h3>
+        {% if budget_status %}
+            <div class="space-y-2">
+                <p class="text-sm text-gray-600">Budget: <span class="font-semibold">${{ budget_status.budget|round(2) }}</span></p>
+                <p class="text-sm text-gray-600">Spent: <span class="font-semibold">${{ budget_status.spent|round(2) }}</span></p>
+                <p class="text-sm text-gray-600">Remaining: <span class="font-semibold ${{ 'text-red-600' if budget_status.remaining < 0 else 'text-green-600' }}">${{ budget_status.remaining|round(2) }}</span></p>
+                {% if budget_status.warning %}
+                    <p class="text-xs text-red-600 mt-2">{{ budget_status.warning }}</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="text-sm text-gray-500">No budget set</p>
+            <a href="{{ url_for('budget') }}" class="text-blue-600 hover:text-blue-800 text-sm">Set Budget</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mt-8 bg-white rounded-lg shadow p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="{{ url_for('add_expense') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">Add Expense</a>
+        <a href="{{ url_for('view_expenses') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">View All</a>
+        <a href="{{ url_for('budget') }}" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-center">Manage Budget</a>
+        <a href="{{ url_for('charts') }}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 text-center">View Charts</a>
+    </div>
+</div>
+{% endblock %}
