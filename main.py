@@ -158,3 +158,47 @@ def set_monthly_budget():
     
     # Confirm setting
     print(f"Monthly budget set: ${amount:.2f} for {month} {year}")
+
+# Function to check budget and display warnings
+# Compares current spending against set budget and warns if over limit
+def check_budget():
+    # Retrieve all budgets
+    budgets = database.get_all_budgets()
+    
+    # Check if any budgets are set
+    if not budgets:
+        print("No budget set. Please set a monthly budget first.")
+        return
+    
+    # For simplicity, use the latest budget (assuming one budget)
+    latest_budget = budgets[-1]  # Get the last one
+    budget_id, budget_amount, budget_month, budget_year = latest_budget
+    
+    # Retrieve all expenses
+    expenses = database.get_all_expenses()
+    
+    # Calculate total spending for the budget month/year
+    total_spent = 0
+    for exp in expenses:
+        exp_date = exp[3]  # date is at index 3
+        # Extract month and year from date (assuming YYYY-MM-DD format)
+        exp_year, exp_month, _ = exp_date.split('-')
+        if int(exp_year) == budget_year and exp_month.lower() == budget_month.lower():
+            total_spent += exp[1]  # amount is at index 1
+    
+    # Display budget status
+    print(f"\nBudget for {budget_month} {budget_year}: ${budget_amount:.2f}")
+    print(f"Total spent: ${total_spent:.2f}")
+    
+    # Check if over budget
+    if total_spent > budget_amount:
+        print("⚠️  WARNING: You have exceeded your budget!")
+        over_amount = total_spent - budget_amount
+        print(f"Over budget by: ${over_amount:.2f}")
+    elif total_spent > budget_amount * 0.8:
+        print("⚠️  WARNING: You are close to your budget limit.")
+        remaining = budget_amount - total_spent
+        print(f"Remaining budget: ${remaining:.2f}")
+    else:
+        remaining = budget_amount - total_spent
+        print(f"Remaining budget: ${remaining:.2f}")
