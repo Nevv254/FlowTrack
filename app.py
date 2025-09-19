@@ -105,5 +105,14 @@ def add_expense():
 
     return render_template('add_expense.html')
 
+@app.route('/view_expenses')
+def view_expenses():
+    expenses = database.get_all_expenses()
+
+    # Calculate total
+    total = sum(exp[1] for exp in expenses) if expenses else 0
+
+    return render_template('view_expenses.html', expenses=expenses, total=total)
+
 if __name__ == '__main__':
     app.run(debug=True)
