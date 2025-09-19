@@ -114,5 +114,65 @@ def view_expenses():
 
     return render_template('view_expenses.html', expenses=expenses, total=total)
 
+@app.route('/budget', methods=['GET', 'POST'])
+def budget():
+    if request.method == 'POST':
+        try:
+            amount = float(request.form['amount'])
+            month = request.form['month'].strip()
+            year = int(request.form['year'])
+
+            if amount <= 0:
+                flash('Budget amount must be positive', 'error')
+                return redirect(url_for('budget'))
+
+            if not month:
+                flash('Month is required', 'error')
+                return redirect(url_for('budget'))
+
+            database.insert_budget(amount, month, year)
+            flash(f'Budget set: ${amount:.2f} for {month} {year}', 'success')
+            return redirect(url_for('budget'))
+
+        except ValueError as e:
+            flash(f'Invalid input: {str(e)}', 'error')
+            return redirect(url_for('budget'))
+
+    # Get current budget status
+    budgets = database.get_all_budgets()
+    budget_status = None
+
+    if budgets:
+        latest_budget = budgets[-1]
+        budget_id, budget_amount, budget_month, budget_year = latest_budget
+
+        # Calculate spent for this budget period
+        expenses = database.get_all_expenses()
+        spent = 0
+        for exp in expenses:
+            exp_date = exp[3]
+            exp_year, exp_month, _ = exp_date.split('-')
+            if int(exp_year) == budget_year and exp_month.lower() == budget_month.lower():
+                spent += exp[1]
+
+        remaining = budget_amount - spent
+        warning = None
+
+        if spent > budget_amount:
+            warning = "⚠️ You have exceeded your budget!"
+        elif spent > budget_amount * 0.8:
+            warning = "⚠️ You are close to your budget limit."
+
+        budget_status = {
+            'budget': budget_amount,
+            'spent': spent,
+            'remaining': remaining,
+            'warning': warning,
+            'month': budget_month,
+            'year': budget_year
+        }
+
+    return render_template('budget.html', budget_status=budget_status)
+
 if __name__ == '__main__':
     app.run(debug=True)
