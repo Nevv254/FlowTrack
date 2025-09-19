@@ -26,3 +26,23 @@ def create_expenses_table():
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
+
+# Create budgets table schema
+# This function creates the budgets table if it doesn't exist
+def create_budgets_table():
+    # Get database connection
+    conn = get_connection()
+    # Create cursor object
+    cursor = conn.cursor()
+    # SQL command to create budgets table with id (primary key), amount (real), month (text), year (integer)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS budgets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            amount REAL NOT NULL,
+            month TEXT NOT NULL,
+            year INTEGER NOT NULL
+        )
+    ''')
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
