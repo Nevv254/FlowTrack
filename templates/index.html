@@ -5,55 +5,173 @@
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <!-- Quick Stats -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Stats</h3>
-        <div class="space-y-2">
-            <p class="text-sm text-gray-600">Total Expenses: <span class="font-semibold text-gray-800">${{ total_expenses|round(2) }}</span></p>
-            <p class="text-sm text-gray-600">This Month: <span class="font-semibold text-gray-800">${{ monthly_total|round(2) }}</span></p>
-            <p class="text-sm text-gray-600">Categories: <span class="font-semibold text-gray-800">{{ category_count }}</span></p>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-800">Quick Stats</h3>
+        </div>
+        <div class="space-y-3">
+            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                <span class="text-sm font-medium text-slate-600">Total Expenses</span>
+                <span class="font-semibold text-slate-800">${{ "%.2f"|format(total_expenses) }}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                <span class="text-sm font-medium text-slate-600">This Month</span>
+                <span class="font-semibold text-slate-800">${{ "%.2f"|format(monthly_total) }}</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
+                <span class="text-sm font-medium text-slate-600">Categories</span>
+                <span class="font-semibold text-slate-800">{{ category_count }}</span>
+            </div>
         </div>
     </div>
 
     <!-- Recent Expenses -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Expenses</h3>
-        <div class="space-y-2">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mr-3">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-800">Recent Expenses</h3>
+        </div>
+        <div class="space-y-3">
             {% for expense in recent_expenses %}
-                <div class="flex justify-between items-center py-1">
-                    <span class="text-sm text-gray-600">{{ expense[2] }}</span>
-                    <span class="text-sm font-semibold">${{ expense[1] }}</span>
+                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 bg-emerald-500 rounded-full mr-3"></div>
+                        <span class="text-sm font-medium text-slate-700">{{ expense[2] }}</span>
+                    </div>
+                    <span class="text-sm font-semibold text-slate-800">${{ "%.2f"|format(expense[1]) }}</span>
                 </div>
             {% endfor %}
+            {% if not recent_expenses %}
+                <div class="text-center py-4 text-slate-500">
+                    <p class="text-sm">No recent expenses</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 
     <!-- Budget Status -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Budget Status</h3>
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
+                <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-slate-800">Budget Status</h3>
+        </div>
         {% if budget_status %}
-            <div class="space-y-2">
-                <p class="text-sm text-gray-600">Budget: <span class="font-semibold">${{ budget_status.budget|round(2) }}</span></p>
-                <p class="text-sm text-gray-600">Spent: <span class="font-semibold">${{ budget_status.spent|round(2) }}</span></p>
-                <p class="text-sm text-gray-600">Remaining: <span class="font-semibold ${{ 'text-red-600' if budget_status.remaining < 0 else 'text-green-600' }}">${{ budget_status.remaining|round(2) }}</span></p>
+            <div class="space-y-3">
+                <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-slate-600">Budget</span>
+                        <span class="font-semibold text-slate-800">${{ "%.2f"|format(budget_status.budget) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-slate-600">Spent</span>
+                        <span class="font-semibold text-slate-800">${{ "%.2f"|format(budget_status.spent) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-slate-600">Remaining</span>
+                        <span class="font-semibold {{ 'text-red-600' if budget_status.remaining < 0 else 'text-green-600' }}">${{ "%.2f"|format(budget_status.remaining) }}</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-slate-500">
+                        <span>Progress</span>
+                        <span>{{ "%.1f"|format((budget_status.spent / budget_status.budget) * 100) }}%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                             style="width: {{ ((budget_status.spent / budget_status.budget) * 100)|round|int }}%;"></div>
+                    </div>
+                </div>
+
                 {% if budget_status.warning %}
-                    <p class="text-xs text-red-600 mt-2">{{ budget_status.warning }}</p>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                        <div class="flex items-center">
+                            <div class="text-red-500 mr-2">
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <p class="text-sm text-red-700 font-medium">{{ budget_status.warning }}</p>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         {% else %}
-            <p class="text-sm text-gray-500">No budget set</p>
-            <a href="{{ url_for('budget') }}" class="text-blue-600 hover:text-blue-800 text-sm">Set Budget</a>
+            <div class="text-center py-6">
+                <div class="text-slate-400 mb-3">
+                    <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <p class="text-sm text-slate-600 mb-3">No budget set yet</p>
+                <a href="{{ url_for('budget') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Set Your Budget
+                </a>
+            </div>
         {% endif %}
     </div>
 </div>
 
 <!-- Quick Actions -->
-<div class="mt-8 bg-white rounded-lg shadow p-6">
-    <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+<div class="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+    <div class="flex items-center mb-6">
+        <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-slate-800">Quick Actions</h3>
+    </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href="{{ url_for('add_expense') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">Add Expense</a>
-        <a href="{{ url_for('view_expenses') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">View All</a>
-        <a href="{{ url_for('budget') }}" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-center">Manage Budget</a>
-        <a href="{{ url_for('charts') }}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 text-center">View Charts</a>
+        <a href="{{ url_for('add_expense') }}" class="group bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 text-center shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+            <div class="flex flex-col items-center">
+                <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <span class="text-sm font-medium">Add Expense</span>
+            </div>
+        </a>
+        <a href="{{ url_for('view_expenses') }}" class="group bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-all duration-200 text-center shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+            <div class="flex flex-col items-center">
+                <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <span class="text-sm font-medium">View All</span>
+            </div>
+        </a>
+        <a href="{{ url_for('budget') }}" class="group bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all duration-200 text-center shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+            <div class="flex flex-col items-center">
+                <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-sm font-medium">Manage Budget</span>
+            </div>
+        </a>
+        <a href="{{ url_for('charts') }}" class="group bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-all duration-200 text-center shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
+            <div class="flex flex-col items-center">
+                <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="text-sm font-medium">View Charts</span>
+            </div>
+        </a>
     </div>
 </div>
 {% endblock %}
