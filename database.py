@@ -72,3 +72,35 @@ def insert_budget(amount, month, year):
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
+
+# Retrieve all expenses from database
+# This function fetches all expense records from the expenses table
+def get_all_expenses():
+    # Get database connection
+    conn = get_connection()
+    # Create cursor object
+    cursor = conn.cursor()
+    # SQL command to select all expenses
+    cursor.execute('SELECT id, amount, category, date FROM expenses')
+    # Fetch all results
+    expenses = cursor.fetchall()
+    # Close the connection
+    conn.close()
+    # Return the list of expenses
+    return expenses
+
+# Retrieve all budgets from database
+# This function fetches all budget records from the budgets table
+def get_all_budgets():
+    # Get database connection
+    conn = get_connection()
+    # Create cursor object
+    cursor = conn.cursor()
+    # SQL command to select all budgets
+    cursor.execute('SELECT id, amount, month, year FROM budgets')
+    # Fetch all results
+    budgets = cursor.fetchall()
+    # Close the connection
+    conn.close()
+    # Return the list of budgets
+    return budgets
