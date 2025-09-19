@@ -67,5 +67,43 @@ def index():
                          recent_expenses=recent_expenses,
                          budget_status=budget_status)
 
+@app.route('/add_expense', methods=['GET', 'POST'])
+def add_expense():
+    if request.method == 'POST':
+        try:
+            amount = float(request.form['amount'])
+            category = request.form['category'].strip()
+            date = request.form['date'].strip()
+
+            # Validate inputs
+            if amount <= 0:
+                flash('Amount must be a positive number', 'error')
+                return redirect(url_for('add_expense'))
+
+            if not category:
+                category = 'misc'
+
+            # Validate date format
+            from datetime import datetime
+            datetime.strptime(date, '%Y-%m-%d')
+
+            # Create expense object and validate
+            exp = expense.Expense(amount, category, date)
+
+            # Insert into database
+            database.insert_expense(amount, category, date)
+
+            flash(f'Expense added successfully: {exp}', 'success')
+            return redirect(url_for('index'))
+
+        except ValueError as e:
+            flash(f'Invalid input: {str(e)}', 'error')
+            return redirect(url_for('add_expense'))
+        except Exception as e:
+            flash(f'Error adding expense: {str(e)}', 'error')
+            return redirect(url_for('add_expense'))
+
+    return render_template('add_expense.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
