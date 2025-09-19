@@ -120,3 +120,41 @@ def view_expenses_by_category():
     total = sum(exp[1] for exp in filtered_expenses)
     print("-" * 50)
     print(f"Total for '{category}': ${total:.2f}")
+
+# Function to set monthly budget
+# Prompts user for budget amount, month, and year, then stores it
+def set_monthly_budget():
+    # Prompt for budget amount
+    while True:
+        try:
+            amount = float(input("Enter monthly budget amount: "))
+            if amount <= 0:
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid amount. Please enter a positive number.")
+    
+    # Prompt for month
+    while True:
+        month = input("Enter month (e.g., January, February): ").strip()
+        if month:
+            break
+        else:
+            print("Month cannot be empty.")
+    
+    # Prompt for year
+    while True:
+        try:
+            year = int(input("Enter year (e.g., 2023): "))
+            if year > 0:
+                break
+            else:
+                raise ValueError
+        except ValueError:
+            print("Invalid year. Please enter a positive integer.")
+    
+    # Insert budget into database
+    database.insert_budget(amount, month, year)
+    
+    # Confirm setting
+    print(f"Monthly budget set: ${amount:.2f} for {month} {year}")
