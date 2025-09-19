@@ -229,3 +229,52 @@ def view_spending_chart():
     print("\nSpending Summary by Category:")
     for category, amount in spending_summary.items():
         print(f"{category}: ${amount:.2f}")
+
+# Main function to run the application
+# Handles the main loop for user interaction and menu choices
+def main():
+    # Create database tables if they don't exist
+    database.create_expenses_table()
+    database.create_budgets_table()
+    
+    # Welcome message
+    print("Welcome to FlowTrack - Your Personal Expense Tracker!")
+    
+    # Main application loop
+    while True:
+        # Display menu and get user choice
+        choice = display_menu()
+        
+        # Handle user choice
+        if choice == '1':
+            # Add expense
+            add_expense()
+        elif choice == '2':
+            # View all expenses
+            view_all_expenses()
+        elif choice == '3':
+            # View expenses by category
+            view_expenses_by_category()
+        elif choice == '4':
+            # Set monthly budget
+            set_monthly_budget()
+        elif choice == '5':
+            # View spending chart
+            view_spending_chart()
+        elif choice == '6':
+            # Exit
+            print("Thank you for using FlowTrack! Goodbye.")
+            break
+        else:
+            # Invalid choice
+            print("Invalid choice. Please select a number from 1 to 6.")
+    
+    # Check budget on exit if budget is set
+    budgets = database.get_all_budgets()
+    if budgets:
+        print("\nQuick Budget Check:")
+        check_budget()
+
+# Run the main function if this script is executed directly
+if __name__ == "__main__":
+    main()
