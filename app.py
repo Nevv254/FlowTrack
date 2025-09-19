@@ -174,5 +174,18 @@ def budget():
 
     return render_template('budget.html', budget_status=budget_status)
 
+@app.route('/charts')
+def charts():
+    # Get all expenses
+    expenses = database.get_all_expenses()
+
+    # Calculate spending by category
+    spending_summary = analytics.calculate_spending_by_category(expenses)
+
+    # Generate chart HTML
+    chart_html = analytics.generate_pie_chart_html(spending_summary)
+
+    return render_template('charts.html', chart_html=chart_html, spending_summary=spending_summary)
+
 if __name__ == '__main__':
     app.run(debug=True)
