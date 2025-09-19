@@ -87,3 +87,36 @@ def view_all_expenses():
     total = sum(exp[1] for exp in expenses)
     print("-" * 50)
     print(f"Total: ${total:.2f}")
+
+# Function to view expenses filtered by category
+# Prompts user for category and displays matching expenses
+def view_expenses_by_category():
+    # Prompt for category
+    category = input("Enter category to filter by: ").strip()
+    
+    # Retrieve all expenses
+    expenses = database.get_all_expenses()
+    
+    # Filter expenses by category
+    filtered_expenses = [exp for exp in expenses if exp[2].lower() == category.lower()]
+    
+    # Check if there are any matching expenses
+    if not filtered_expenses:
+        print(f"No expenses found for category '{category}'.")
+        return
+    
+    # Print header
+    print(f"\nExpenses in category '{category}':")
+    print("-" * 50)
+    print(f"{'ID':<5} {'Amount':<10} {'Date':<12}")
+    print("-" * 50)
+    
+    # Print each filtered expense
+    for exp in filtered_expenses:
+        exp_id, amount, _, date = exp
+        print(f"{exp_id:<5} ${amount:<9.2f} {date:<12}")
+    
+    # Print total for category
+    total = sum(exp[1] for exp in filtered_expenses)
+    print("-" * 50)
+    print(f"Total for '{category}': ${total:.2f}")
