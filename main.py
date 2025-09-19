@@ -23,3 +23,40 @@ def display_menu():
     choice = input("Choose an option (1-6): ")
     # Return the user's choice
     return choice
+
+# Function to add a new expense
+# Prompts user for expense details and validates input
+def add_expense():
+    # Prompt for amount
+    while True:
+        try:
+            amount = float(input("Enter expense amount: "))
+            if amount <= 0:
+                raise ValueError
+            break
+        except ValueError:
+            print("Invalid amount. Please enter a positive number.")
+    
+    # Prompt for category
+    category = input("Enter expense category (e.g., food, transport): ").strip()
+    if not category:
+        category = "misc"
+    
+    # Prompt for date
+    while True:
+        date = input("Enter expense date (YYYY-MM-DD): ").strip()
+        try:
+            from datetime import datetime
+            datetime.strptime(date, '%Y-%m-%d')
+            break
+        except ValueError:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+    
+    # Create Expense object
+    exp = expense.Expense(amount, category, date)
+    
+    # Insert into database
+    database.insert_expense(amount, category, date)
+    
+    # Confirm addition
+    print(f"Expense added: {exp}")
