@@ -46,3 +46,29 @@ def create_budgets_table():
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
+
+# Insert expense into database
+# This function inserts a new expense record into the expenses table
+def insert_expense(amount, category, date):
+    # Get database connection
+    conn = get_connection()
+    # Create cursor object
+    cursor = conn.cursor()
+    # SQL command to insert expense data
+    cursor.execute('INSERT INTO expenses (amount, category, date) VALUES (?, ?, ?)', (amount, category, date))
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+# Insert budget into database
+# This function inserts a new budget record into the budgets table
+def insert_budget(amount, month, year):
+    # Get database connection
+    conn = get_connection()
+    # Create cursor object
+    cursor = conn.cursor()
+    # SQL command to insert budget data
+    cursor.execute('INSERT INTO budgets (amount, month, year) VALUES (?, ?, ?)', (amount, month, year))
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
