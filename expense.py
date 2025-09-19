@@ -32,3 +32,9 @@ class Expense:
             datetime.strptime(self.date, '%Y-%m-%d')
         except ValueError:
             raise ValueError("Date must be in YYYY-MM-DD format")
+
+    # String representation of the Expense object
+    # Returns a formatted string showing expense details
+    def __str__(self):
+        # Format the expense information for display
+        return f"Expense: ${self.amount:.2f} on {self.date} in category '{self.category}'"
