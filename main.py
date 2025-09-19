@@ -60,3 +60,30 @@ def add_expense():
     
     # Confirm addition
     print(f"Expense added: {exp}")
+
+# Function to view all expenses in a formatted list
+# Retrieves and displays all expenses from the database
+def view_all_expenses():
+    # Retrieve all expenses from database
+    expenses = database.get_all_expenses()
+    
+    # Check if there are any expenses
+    if not expenses:
+        print("No expenses found.")
+        return
+    
+    # Print header
+    print("\nAll Expenses:")
+    print("-" * 50)
+    print(f"{'ID':<5} {'Amount':<10} {'Category':<15} {'Date':<12}")
+    print("-" * 50)
+    
+    # Print each expense
+    for exp in expenses:
+        exp_id, amount, category, date = exp
+        print(f"{exp_id:<5} ${amount:<9.2f} {category:<15} {date:<12}")
+    
+    # Print total
+    total = sum(exp[1] for exp in expenses)
+    print("-" * 50)
+    print(f"Total: ${total:.2f}")
