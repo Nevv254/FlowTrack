@@ -202,3 +202,30 @@ def check_budget():
     else:
         remaining = budget_amount - total_spent
         print(f"Remaining budget: ${remaining:.2f}")
+
+# Function to display spending chart
+# Generates and shows a pie chart of spending by category using analytics module
+def view_spending_chart():
+    # Retrieve all expenses
+    expenses = database.get_all_expenses()
+    
+    # Check if there are any expenses
+    if not expenses:
+        print("No expenses found. Please add some expenses first.")
+        return
+    
+    # Calculate spending by category using analytics
+    spending_summary = analytics.calculate_spending_by_category(expenses)
+    
+    # Check if there are categories with spending
+    if not spending_summary:
+        print("No spending data available for chart.")
+        return
+    
+    # Generate and display the pie chart
+    analytics.generate_pie_chart(spending_summary)
+    
+    # Print summary
+    print("\nSpending Summary by Category:")
+    for category, amount in spending_summary.items():
+        print(f"{category}: ${amount:.2f}")
